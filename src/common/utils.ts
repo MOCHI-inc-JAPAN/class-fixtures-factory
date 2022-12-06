@@ -2,7 +2,10 @@
  * Get possible values from an enum
  * @param enumObj
  */
-export const getEnumValues = (enumObj: any) => {
+export const getEnumValues = (enumObj: {
+  [key: string]: any;
+  propertyIsEnumerable: (key: string) => boolean;
+}) => {
   const keysList = Object.getOwnPropertyNames(enumObj).filter((key: string) => {
     // eslint-disable-next-line no-prototype-builtins
     return enumObj.propertyIsEnumerable(key) && key !== String(parseFloat(key));

@@ -1,16 +1,15 @@
 {
-  "include": ["src", "types", "__test__"],
+  "include": ["src", "__test__"],
   "compilerOptions": {
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "rootDir": "./",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -24,10 +23,11 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "*": ["src/*", "node_modules/*"]
+      "*": ["*"]
     },
+    "outDir": "./dist",
     "jsx": "react",
     "esModuleInterop": true
   }

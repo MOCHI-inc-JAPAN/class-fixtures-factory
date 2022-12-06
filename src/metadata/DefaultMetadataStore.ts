@@ -8,6 +8,7 @@ import reflect, { PropertyReflection } from '@plumier/reflect';
 import { FixtureOptions } from '../decorators/Fixture';
 import { getEnumValues } from '../common/utils';
 import { ClassValidatorAdapter } from './ClassValidatorAdapter';
+import { faker } from '@faker-js/faker';
 
 export class DefaultMetadataStore extends BaseMetadataStore {
   private cvAdapter = new ClassValidatorAdapter();
@@ -79,7 +80,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
     };
     if (decorator) {
       if (typeof decorator === 'function') {
-        meta.input = decorator.bind(decorator, require('@faker-js/faker'));
+        meta.input = decorator.bind(decorator, faker);
       } else if (typeof decorator === 'string') {
         meta.input = () => decorator;
       } else if (typeof decorator === 'object') {

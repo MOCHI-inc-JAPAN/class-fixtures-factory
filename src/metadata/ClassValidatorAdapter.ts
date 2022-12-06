@@ -1,4 +1,4 @@
-import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
+import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import { getFromContainer, MetadataStorage } from 'class-validator';
 import { faker } from '@faker-js/faker';
 import { PropertyMetadata } from '.';
@@ -18,7 +18,7 @@ export class ClassValidatorAdapter {
   extractMedatada(classType: Class) {
     const metadata = getFromContainer(
       MetadataStorage
-    ).getTargetValidationMetadatas(classType, '', true, true);
+    ).getTargetValidationMetadatas(classType, '');
     return (this.metadata[classType.name] = metadata);
   }
 
@@ -35,6 +35,7 @@ export class ClassValidatorAdapter {
       max: null as any,
       min: null as any,
     };
+    console.log(JSON.stringify(cvMeta))
 
     switch (cvMeta.type) {
       case 'isBoolean': {
