@@ -3,7 +3,7 @@
  * @param enumObj
  */
 export const getEnumValues = (enumObj: any) => {
-  const keysList = Object.getOwnPropertyNames(enumObj).filter(key => {
+  const keysList = Object.getOwnPropertyNames(enumObj).filter((key: string) => {
     // eslint-disable-next-line no-prototype-builtins
     return enumObj.propertyIsEnumerable(key) && key !== String(parseFloat(key));
   });

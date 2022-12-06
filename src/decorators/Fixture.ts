@@ -1,8 +1,9 @@
-import { decorateProperty } from 'tinspector';
+import { decorateProperty } from '@plumier/reflect';
+import { Faker } from '@faker-js/faker';
 
 export type FixtureOptions =
   | string
-  | ((faker?: Faker.FakerStatic) => string | undefined)
+  | ((faker?: Faker) => string | undefined)
   | (() => any)
   | {
       type?: () => object;
@@ -10,7 +11,7 @@ export type FixtureOptions =
       enum?: object;
       min?: number;
       max?: number;
-      get?: ((faker?: Faker.FakerStatic) => string | undefined) | (() => any);
+      get?: ((faker?: Faker) => string | undefined) | (() => any);
     };
 
 /**

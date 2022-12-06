@@ -5,10 +5,9 @@ import {
   PropertyMetadata,
 } from './metadata';
 import { Class } from './common/typings';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import chalk from 'chalk';
 import { FactoryLogger } from './FactoryLogger';
-//import { ClassValidatorAdapter } from './ClassValidatorAdapter';
 
 export interface FactoryOptions {
   logging?: boolean;
@@ -229,16 +228,16 @@ export class FixtureFactory {
   protected makeScalarProperty(prop: PropertyMetadata) {
     if (prop.enum) {
       if (prop.items) {
-        return faker.random.arrayElement(prop.items);
+        return faker.helpers.arrayElement(prop.items);
       }
     }
     switch (prop.type) {
       case 'string':
         return faker.random.word();
       case 'number':
-        return faker.random.number();
+        return faker.datatype.number();
       case 'boolean':
-        return faker.random.boolean();
+        return faker.datatype.boolean();
       case 'Date':
         return faker.date.recent();
       default:
@@ -248,7 +247,7 @@ export class FixtureFactory {
   }
 
   private makeArrayProp(prop: PropertyMetadata, meta: ClassMetadata) {
-    const amount = faker.random.number({
+    const amount = faker.datatype.number({
       max: prop.max,
       min: prop.min,
     });
@@ -285,7 +284,7 @@ export class FixtureFactory {
     const value = this._make(
       refClassMeta,
       this.classTypes[prop.type],
-      props.map(p => p.name)
+      props.map((p) => p.name)
     );
 
     oldLogger.onClassPropDone(prop, logger);

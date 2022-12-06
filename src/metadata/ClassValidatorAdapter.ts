@@ -1,6 +1,6 @@
-import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
+import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
 import { getFromContainer, MetadataStorage } from 'class-validator';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { PropertyMetadata } from '.';
 import { Class } from '..';
 
@@ -18,7 +18,7 @@ export class ClassValidatorAdapter {
   extractMedatada(classType: Class) {
     const metadata = getFromContainer(
       MetadataStorage
-    ).getTargetValidationMetadatas(classType, '');
+    ).getTargetValidationMetadatas(classType, '', true, true);
     return (this.metadata[classType.name] = metadata);
   }
 
@@ -41,7 +41,7 @@ export class ClassValidatorAdapter {
         return {
           ...prop,
           type: prop.type || 'boolean',
-          input: () => faker.random.boolean(),
+          input: () => faker.datatype.boolean(),
         } as PropertyMetadata;
       }
       case 'isDate': {
@@ -63,7 +63,7 @@ export class ClassValidatorAdapter {
         return {
           ...prop,
           type: prop.type || 'any',
-          input: () => faker.random.arrayElement(items),
+          input: () => faker.helpers.arrayElement(items),
         } as PropertyMetadata;
       }
       case 'equals':
@@ -215,7 +215,7 @@ export class ClassValidatorAdapter {
         const sign = max < 0 ? -1 : 1;
         let value =
           sign *
-          faker.random.number({
+          faker.datatype.number({
             min: Math.abs(min || sign),
             max: Math.abs(max || 10000),
           });
@@ -265,7 +265,7 @@ export class ClassValidatorAdapter {
       case 'alpha': {
         const min = data.min as number;
         const max = data.max as number;
-        const ln = faker.random.number({ min: min || 5, max: max || 10 });
+        const ln = faker.datatype.number({ min: min || 5, max: max || 10 });
         const value = faker.lorem
           .sentence(100)
           .substr(0, ln)
@@ -279,7 +279,7 @@ export class ClassValidatorAdapter {
       case 'alphanumeric': {
         const min = data.min as number;
         const max = data.max as number;
-        const ln = faker.random.number({ min: min || 5, max: max || 10 });
+        const ln = faker.datatype.number({ min: min || 5, max: max || 10 });
         return {
           ...prop,
           type: 'string',

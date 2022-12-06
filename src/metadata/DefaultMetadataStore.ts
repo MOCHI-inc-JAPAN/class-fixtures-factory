@@ -4,7 +4,7 @@ import {
   PropertyMetadata,
 } from './BaseMetadataStore';
 import { Class } from '../common/typings';
-import reflect, { PropertyReflection } from 'tinspector';
+import reflect, { PropertyReflection } from '@plumier/reflect';
 import { FixtureOptions } from '../decorators/Fixture';
 import { getEnumValues } from '../common/utils';
 import { ClassValidatorAdapter } from './ClassValidatorAdapter';
@@ -25,11 +25,11 @@ export class DefaultMetadataStore extends BaseMetadataStore {
 
     const unknownTypes = new Set<string>();
     let properties = rMetadata.properties
-      .map(prop => this.makePropertyMetadata(prop)!)
+      .map((prop) => this.makePropertyMetadata(prop)!)
       .filter(Boolean);
     for (const cvMeta of cvMetadata) {
       const existingProp = properties.find(
-        prop => prop.name === cvMeta.propertyName
+        (prop) => prop.name === cvMeta.propertyName
       );
       const deducedProp = this.cvAdapter.makePropertyMetadata(
         cvMeta,
@@ -37,7 +37,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
       ) as PropertyMetadata | null;
       if (deducedProp) {
         if (existingProp) {
-          properties = properties.map(prop =>
+          properties = properties.map((prop) =>
             prop.name === cvMeta.propertyName ? deducedProp : existingProp
           );
         } else {
@@ -46,7 +46,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
         unknownTypes.delete(cvMeta.propertyName);
       } else {
         const typeResolved = !!properties.find(
-          v => v.name === cvMeta.propertyName && !!v.type
+          (v) => v.name === cvMeta.propertyName && !!v.type
         );
         if (!typeResolved) {
           unknownTypes.add(cvMeta.propertyName);
@@ -57,7 +57,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
     if (unknownTypes.size > 0) {
       throw new Error(
         `Couldn't extract the type of ${[...unknownTypes]
-          .map(v => `"${v}"`)
+          .map((v) => `"${v}"`)
           .join(', ')}. Use @Fixture({ type: () => Foo })`
       );
     }
@@ -79,7 +79,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
     };
     if (decorator) {
       if (typeof decorator === 'function') {
-        meta.input = decorator.bind(decorator, require('faker'));
+        meta.input = decorator.bind(decorator, require('@faker-js/faker'));
       } else if (typeof decorator === 'string') {
         meta.input = () => decorator;
       } else if (typeof decorator === 'object') {
@@ -138,6 +138,6 @@ export class DefaultMetadataStore extends BaseMetadataStore {
   }
 
   private getFixtureDecorator(prop: PropertyReflection): FixtureOptions {
-    return prop.decorators.find(v => v.type === 'Fixture')?.value || null;
+    return prop.decorators.find((v) => v.type === 'Fixture')?.value || null;
   }
 }

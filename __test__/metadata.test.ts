@@ -44,7 +44,7 @@ describe('Metadata Store', () => {
       address!: Address;
       @Fixture({ type: () => [Book] })
       books!: Book[];
-      @Fixture(faker => faker?.address.city())
+      @Fixture((faker) => faker?.address?.city())
       city!: string;
       @Fixture(() => ({ petName: 'foo' }))
       pet!: any;
@@ -60,28 +60,32 @@ describe('Metadata Store', () => {
     });
 
     it(`@Fixture(string)`, () => {
-      const lastNameProp = metadata.properties.find(p => p.name === 'lastName');
+      const lastNameProp = metadata.properties.find(
+        (p) => p.name === 'lastName'
+      );
 
       expect(lastNameProp?.input).toBeDefined();
       expect(lastNameProp?.input?.()).toBe('{{name.lastName}}');
     });
 
     it(`@Fixture((faker) => string))`, () => {
-      const cityProp = metadata.properties.find(p => p.name === 'city');
+      const cityProp = metadata.properties.find((p) => p.name === 'city');
 
       expect(cityProp?.input).toBeDefined();
       expect(typeof cityProp?.input?.()).toBe('string');
     });
 
     it(`@Fixture(() => any))`, () => {
-      const petProp = metadata.properties.find(p => p.name === 'pet');
+      const petProp = metadata.properties.find((p) => p.name === 'pet');
 
       expect(petProp?.input).toBeDefined();
       expect(petProp?.input?.()).toMatchObject({ petName: 'foo' });
     });
 
     it(`@Fixture({ get: (faker) => string) })`, () => {
-      const fullNameProp = metadata.properties.find(p => p.name === 'fullName');
+      const fullNameProp = metadata.properties.find(
+        (p) => p.name === 'fullName'
+      );
 
       expect(fullNameProp?.input).toBeDefined();
       expect(typeof fullNameProp?.input?.()).toBe('string');
@@ -89,7 +93,7 @@ describe('Metadata Store', () => {
 
     it(`string`, () => {
       const firstNameProp = metadata.properties.find(
-        p => p.name === 'firstName'
+        (p) => p.name === 'firstName'
       );
 
       expect(firstNameProp).toMatchObject({
@@ -98,7 +102,7 @@ describe('Metadata Store', () => {
     });
 
     it(`number`, () => {
-      const ageProp = metadata.properties.find(p => p.name === 'age');
+      const ageProp = metadata.properties.find((p) => p.name === 'age');
 
       expect(ageProp).toMatchObject({
         type: 'number',
@@ -106,7 +110,7 @@ describe('Metadata Store', () => {
     });
 
     it(`boolean`, () => {
-      const awardedProp = metadata.properties.find(p => p.name === 'awarded');
+      const awardedProp = metadata.properties.find((p) => p.name === 'awarded');
 
       expect(awardedProp).toMatchObject({
         type: 'boolean',
@@ -114,7 +118,7 @@ describe('Metadata Store', () => {
     });
 
     it(`number enum`, () => {
-      const moodProp = metadata.properties.find(p => p.name === 'mood');
+      const moodProp = metadata.properties.find((p) => p.name === 'mood');
 
       expect(moodProp).toMatchObject({
         type: 'number',
@@ -125,7 +129,7 @@ describe('Metadata Store', () => {
 
     it(`string enum`, () => {
       const petPreferenceProp = metadata.properties.find(
-        p => p.name === 'petPreference'
+        (p) => p.name === 'petPreference'
       );
 
       expect(petPreferenceProp).toMatchObject({
@@ -136,7 +140,9 @@ describe('Metadata Store', () => {
     });
 
     it(`array`, () => {
-      const surnamesProp = metadata.properties.find(p => p.name === 'surnames');
+      const surnamesProp = metadata.properties.find(
+        (p) => p.name === 'surnames'
+      );
 
       expect(surnamesProp).toMatchObject({
         type: 'string',
@@ -145,7 +151,7 @@ describe('Metadata Store', () => {
     });
 
     it(`class`, () => {
-      const booksProp = metadata.properties.find(p => p.name === 'books');
+      const booksProp = metadata.properties.find((p) => p.name === 'books');
 
       expect(booksProp).toMatchObject({
         type: 'Book',
@@ -154,7 +160,9 @@ describe('Metadata Store', () => {
     });
 
     it(`array with min and max`, () => {
-      const positionProp = metadata.properties.find(p => p.name === 'position');
+      const positionProp = metadata.properties.find(
+        (p) => p.name === 'position'
+      );
 
       expect(positionProp).toMatchObject({
         type: 'number',
@@ -165,7 +173,7 @@ describe('Metadata Store', () => {
     });
 
     it(`object`, () => {
-      const addressProp = metadata.properties.find(p => p.name === 'address');
+      const addressProp = metadata.properties.find((p) => p.name === 'address');
 
       expect(addressProp).toMatchObject({
         type: 'Object',
