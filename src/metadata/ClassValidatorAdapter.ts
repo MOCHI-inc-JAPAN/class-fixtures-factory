@@ -35,7 +35,6 @@ export class ClassValidatorAdapter {
       max: null as any,
       min: null as any,
     };
-    console.log(JSON.stringify(cvMeta))
 
     switch (cvMeta.type) {
       case 'isBoolean': {

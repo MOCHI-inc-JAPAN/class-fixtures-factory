@@ -16,8 +16,9 @@
     "type": "git",
     "url": "https://github.com/tkow/class-fixtures-factory.git"
   },
-  "main": "./dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "dist/types",
   "files": [
     "dist"
   ],
@@ -40,9 +41,12 @@
     "class-validator": "0.11.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.5",
     "@changesets/cli": "^2.25.2",
     "@microsoft/api-documenter": "^7.19.25",
     "@microsoft/api-extractor": "^7.33.6",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@swc/core": "^1.3.21",
     "@swc/jest": "^0.2.23",
     "@types/jest": "^29.2.4",
@@ -62,6 +66,7 @@
     "lint-staged": "^10.0.8",
     "pkg-ok": "^3.0.0",
     "prettier": "^2.8.0",
+    "rollup": "^3.6.0",
     "ts-jest": "^29.0.3",
     "tslib": "^2.4.1",
     "typescript": "^4.9.3"

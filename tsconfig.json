@@ -1,14 +1,16 @@
 {
-  "include": ["src", "__test__"],
+  "include": ["src"],
   "compilerOptions": {
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "module": "CommonJS",
+    "target": "ESNext",
+    "module": "ES6",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
     "declaration": true,
     "declarationMap": true,
+    "declarationDir": "types",
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,
