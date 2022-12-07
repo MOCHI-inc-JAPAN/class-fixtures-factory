@@ -1,4 +1,4 @@
-# class-fixtures-factory <!-- omit in toc -->
+# @mochi-inc-japan/class-fixtures-factory
 
 This lightweight lib is a class factory to generate fixtures on the fly. However, contrarily to most (or rather all)
 libs out there, `class-fixtures-factory` generate fixtures from classes. This is handy when you already have
@@ -35,7 +35,7 @@ Because `class-fixtures-factory` relies on metadata, you'll have to:
    Besides the decorators shipped with the lib, you can also use `class-validator` decorators.
 
 ```ts
-import { FixtureFactory } from 'class-fixtures-factory';
+import { FixtureFactory } from '@mochi-inc-japan/class-fixtures-factory';
 
 const factory = new FixtureFactory();
 factory.register([Author, Address, Book]);
@@ -118,7 +118,7 @@ export class Author extends BaseEntity {
 You can pass an `options` object to the `FixtureFactory` constructor:
 
 ```ts
-import { FixtureFactory } from 'class-fixtures-factory';
+import { FixtureFactory } from '@mochi-inc-japan/class-fixtures-factory';
 
 const factory = new FixtureFactory({ /* options */});
 ```
@@ -143,6 +143,35 @@ factory.setAssigner(assigner);
 ### API
 
 See the API docs page [here](./docs/markdown/index.md).
+
+
+### For Babel envrironement
+
+You need setting basically three plugins with Babel.
+
+```js
+module.exports = {
+  "presets": [
+     ...
+  ],
+  "plugins": [
+    ["babel-plugin-transform-typescript-metadata"]
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", {"loose": true}]
+  ]
+}
+```
+
+Some presets already includes some of them, For example, Expo using React Native babel config.
+
+```js
+module.exports = {
+    "plugins": [
+      ["babel-plugin-transform-typescript-metadata"],
+    ],
+    presets: ['babel-preset-expo'],
+}
+```
 
 ## Thanks to
 

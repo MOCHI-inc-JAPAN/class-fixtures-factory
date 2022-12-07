@@ -8,7 +8,7 @@
   "kind": "Package",
   "canonicalReference": "class-fixtures-factory!",
   "docComment": "",
-  "name": "class-fixtures-factory",
+  "name": "@mochi-inc-japan/class-fixtures-factory",
   "members": [
     {
       "kind": "EntryPoint",
