@@ -44,6 +44,7 @@ dependencies:
   '@types/treeify': 1.0.0
   chalk: 4.1.2
   treeify: 1.1.0
+  tslib: 2.4.1
 
 devDependencies:
   '@babel/core': 7.20.5
@@ -75,7 +76,6 @@ devDependencies:
   prettier: 2.8.0
   rollup: 3.6.0
   ts-jest: 29.0.3_6e7mqrelncvn5j57uonhn3ff4i
-  tslib: 2.4.1
   typescript: 4.9.3
 
 packages:
@@ -4896,7 +4896,6 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
-    dev: true
 
   /tsutils/3.21.0_typescript@4.9.3:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
