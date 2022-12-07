@@ -23,8 +23,6 @@ export class DefaultMetadataStore extends BaseMetadataStore {
   make(classType: Class): ClassMetadata {
     const rMetadata = reflect(classType);
     const cvMetadata = this.cvAdapter.extractMedatada(classType);
-    console.log(JSON.stringify(rMetadata));
-    console.log(JSON.stringify(cvMetadata));
     const unknownTypes = new Set<string>();
     let properties = rMetadata.properties
       .map((prop) => this.makePropertyMetadata(prop)!)
@@ -94,6 +92,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
           if (Array.isArray(inputType)) {
             inputType = inputType[0];
             meta.array = true;
+            meta.scalar = false;
           }
           if (!inputType.prototype) {
             throw new Error(
@@ -118,7 +117,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
         if (this.acceptPartialResult) {
           return meta as PropertyMetadata;
         }
-      } else if (Array.isArray(prop.type)) {
+      } else if (prop.type === Array) {
         throw new Error(
           `The type of "${meta.name}" seems to be an array. Use @Fixture({ type: () => Foo })`
         );

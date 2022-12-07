@@ -206,7 +206,6 @@ export class FixtureFactory {
   }
 
   protected shouldIgnoreProperty(prop: PropertyMetadata) {
-    //if (prop.type === 'method') return true;
     if (prop.ignore) return true;
     return false;
   }

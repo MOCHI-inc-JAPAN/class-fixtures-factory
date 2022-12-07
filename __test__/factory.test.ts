@@ -43,60 +43,57 @@ describe(`FixtureFactory`, () => {
     expect(factory.getStore().get(DummyBook)).toBeDefined();
   });
 
-  // describe(`factory result`, () => {
-    // it(`make().one()`, () => {
-    //   class DummyAuthor {}
-    //   factory.register([DummyAuthor]);
+  describe(`factory result`, () => {
+    it(`make().one()`, () => {
+      class DummyAuthor {}
+      factory.register([DummyAuthor]);
 
-    //   const result = factory.make(DummyAuthor);
-    //   expect(typeof result.one).toBe('function');
-    //   expect(result.one()).toBeInstanceOf(DummyAuthor);
-    // });
+      const result = factory.make(DummyAuthor);
+      expect(typeof result.one).toBe('function');
+      expect(result.one()).toBeInstanceOf(DummyAuthor);
+    });
 
-    // it(`make().many()`, () => {
-    //   class DummyAuthor {}
-    //   factory.register([DummyAuthor]);
+    it(`make().many()`, () => {
+      class DummyAuthor {}
+      factory.register([DummyAuthor]);
 
-    //   const result = factory.make(DummyAuthor);
-    //   expect(typeof result.many).toBe('function');
-    //   const authors = result.many(5);
-    //   expect(Array.isArray(authors)).toBe(true);
-    //   expect(authors.length).toBe(5);
-    //   expect(authors[0]).toBeInstanceOf(DummyAuthor);
-    // });
+      const result = factory.make(DummyAuthor);
+      expect(typeof result.many).toBe('function');
+      const authors = result.many(5);
+      expect(Array.isArray(authors)).toBe(true);
+      expect(authors.length).toBe(5);
+      expect(authors[0]).toBeInstanceOf(DummyAuthor);
+    });
 
-  //   it(`make().ignore()`, () => {
-  //     class DummyAuthor {
-  //       @Fixture()
-  //       name!: string;
-  //       @Fixture()
-  //       age!: string;
-  //     }
-  //     factory.register([DummyAuthor]);
+    it(`make().ignore()`, () => {
+      class DummyAuthor {
+        @Fixture()
+        name!: string;
+        @Fixture()
+        age!: string;
+      }
+      factory.register([DummyAuthor]);
 
-  //     const result = factory
-  //       .make(DummyAuthor)
-  //       .ignore('age')
-  //       .one();
-  //     expect(result.age).toBeUndefined();
-  //   });
+      const result = factory.make(DummyAuthor).ignore('age').one();
+      expect(result.age).toBeUndefined();
+    });
 
-  //   it(`make().with()`, () => {
-  //     class DummyAuthor {
-  //       @Fixture()
-  //       name!: string;
-  //     }
-  //     factory.register([DummyAuthor]);
+    it(`make().with()`, () => {
+      class DummyAuthor {
+        @Fixture()
+        name!: string;
+      }
+      factory.register([DummyAuthor]);
 
-  //     const result = factory
-  //       .make(DummyAuthor)
-  //       .with({
-  //         name: 'foo',
-  //       })
-  //       .one();
-  //     expect(result.name).toBe('foo');
-  //   });
-  // });
+      const result = factory
+        .make(DummyAuthor)
+        .with({
+          name: 'foo',
+        })
+        .one();
+      expect(result.name).toBe('foo');
+    });
+  });
 
   describe(`generating properties`, () => {
     it(`@Fixture(string)`, () => {
@@ -112,7 +109,7 @@ describe(`FixtureFactory`, () => {
 
     it(`@Fixture(faker => string)`, () => {
       class Person {
-        @Fixture(faker => faker?.name.lastName())
+        @Fixture((faker) => faker?.name.lastName())
         lastName!: string;
       }
       factory.register([Person]);
@@ -271,31 +268,36 @@ describe(`FixtureFactory`, () => {
     });
 
     it(`multi-level nesting`, () => {
-      class Author {
+      class BookTagCategory {
         @Fixture()
-        name!: string;
-        @Fixture({ type: () => [Book] })
-        books!: Book[];
+        label!: string;
       }
-      class Book {
-        @Fixture()
-        title!: string;
-        @Fixture({ type: () => [BookTag] })
-        tags!: BookTag[];
-      }
+
       class BookTag {
         @Fixture()
         label!: string;
         @Fixture({ type: () => BookTagCategory })
         category!: BookTagCategory;
       }
-      class BookTagCategory {
+
+      class Book {
         @Fixture()
-        label!: string;
+        title!: string;
+        @Fixture({ type: () => [BookTag] })
+        tags!: BookTag[];
       }
+
+      class Author {
+        @Fixture()
+        name!: string;
+        @Fixture({ type: () => [Book] })
+        books!: Book[];
+      }
+
       factory.register([Author, Book, BookTag, BookTagCategory]);
 
       const author = factory.make(Author).one();
+      console.log(author);
       expect(author.books[0]).toBeDefined();
       expect(author.books[0].tags[0]).toBeDefined();
       expect(author.books[0].tags[0].category).toBeDefined();

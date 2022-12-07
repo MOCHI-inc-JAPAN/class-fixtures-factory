@@ -1,4 +1,4 @@
-import { decorateProperty } from '@plumier/reflect';
+import { decorateProperty, noop, mergeDecorator } from '@plumier/reflect';
 import { Faker } from '@faker-js/faker';
 
 export type FixtureOptions =
@@ -20,8 +20,11 @@ export type FixtureOptions =
  * @param options
  */
 export function Fixture(options?: FixtureOptions) {
-  return decorateProperty({
-    type: 'Fixture',
-    value: options,
-  });
+  return mergeDecorator(
+    decorateProperty({
+      type: 'Fixture',
+      value: options,
+    }),
+    noop()
+  );
 }
