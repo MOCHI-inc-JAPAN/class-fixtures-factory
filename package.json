@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tkow/class-fixtures-factory.git"
+    "url": "https://github.com/mochi-inc-japan/class-fixtures-factory.git"
   },
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
