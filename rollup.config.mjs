@@ -9,13 +9,12 @@ export default {
       format: 'es',
       file: 'dist/index.es.js',
       sourcemap: true,
-      plugins: [typescript()],
     },
     {
       format: 'cjs',
       sourcemap: true,
       file: 'dist/index.cjs.js',
-      plugins: [typescript()],
     },
   ],
+  plugins: [typescript()],
 };
