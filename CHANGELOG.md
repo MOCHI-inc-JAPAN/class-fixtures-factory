@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.4
+
+### Patch Changes
+
+- e99b07d: bugfix of reflect is undefined
+
 ## 0.0.3
 
 ### Patch Changes
