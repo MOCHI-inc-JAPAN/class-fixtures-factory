@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tkow/class-fixtures-factory.git"
+    "url": "https://github.com/mochi-inc-japan/class-fixtures-factory.git"
   },
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
@@ -31,6 +31,7 @@
     "test": "jest",
     "lint": "eslint **/*.{js,jsx,ts,tsx}",
     "lint:fix": "eslint --fix **/*.{js,jsx,ts,tsx}",
+    "lint:ci": "npm run lint",
     "release:first": "standard-version --first-release",
     "release": "standard-version",
     "release:publish": "git push --follow-tags origin develop && yarn publish",
