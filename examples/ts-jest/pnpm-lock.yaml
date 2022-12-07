@@ -1,0 +1,7 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@mochi-inc-japan/class-fixtures-factory': link:../..
+
+dependencies:
+  '@mochi-inc-japan/class-fixtures-factory': link:../..
