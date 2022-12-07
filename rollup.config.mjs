@@ -18,5 +18,4 @@ export default {
       plugins: [typescript()],
     },
   ],
-  plugins: [typescript()],
 };

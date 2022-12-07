@@ -4,7 +4,7 @@ import {
   PropertyMetadata,
 } from './BaseMetadataStore';
 import { Class } from '../common/typings';
-import reflect, { PropertyReflection } from '@plumier/reflect';
+import { reflect, PropertyReflection } from '@plumier/reflect';
 import { FixtureOptions } from '../decorators/Fixture';
 import { getEnumValues } from '../common/utils';
 import { ClassValidatorAdapter } from './ClassValidatorAdapter';
