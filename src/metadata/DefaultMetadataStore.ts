@@ -23,7 +23,8 @@ export class DefaultMetadataStore extends BaseMetadataStore {
   make(classType: Class): ClassMetadata {
     const rMetadata = reflect(classType);
     const cvMetadata = this.cvAdapter.extractMedatada(classType);
-
+    console.log(JSON.stringify(rMetadata));
+    console.log(JSON.stringify(cvMetadata));
     const unknownTypes = new Set<string>();
     let properties = rMetadata.properties
       .map((prop) => this.makePropertyMetadata(prop)!)

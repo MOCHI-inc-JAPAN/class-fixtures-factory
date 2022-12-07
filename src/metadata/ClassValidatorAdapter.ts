@@ -210,15 +210,23 @@ export class ClassValidatorAdapter {
 
     switch (data.type) {
       case 'number': {
-        const min = data.min as number;
-        const max = data.max as number;
+        let max: number = (data.max || 10000) as number;
         const sign = max < 0 ? -1 : 1;
-        let value =
-          sign *
-          faker.datatype.number({
-            min: Math.abs(min || sign),
+        let min = (data.min || sign) as number;
+        let value = sign;
+
+        if (min < 0 && max < 0) {
+          value *= faker.datatype.number({
+            min: Math.abs(max || 10000),
+            max: Math.abs(min),
+          });
+        } else {
+          value *= faker.datatype.number({
+            min: Math.abs(min),
             max: Math.abs(max || 10000),
           });
+        }
+
         return {
           ...prop,
           type: 'number',

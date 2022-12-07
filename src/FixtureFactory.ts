@@ -36,7 +36,6 @@ export type Assigner = (
 ) => void;
 
 export class FixtureFactory {
-  private store: BaseMetadataStore;
   private classTypes: Record<string, Class> = {};
   private DEFAULT_OPTIONS: FactoryOptions = {
     logging: false,
@@ -48,8 +47,10 @@ export class FixtureFactory {
   private assigner: Assigner = this.defaultAssigner.bind(this);
   //private cvAdapter = new ClassValidatorAdapter();
 
-  constructor(options?: FactoryOptions) {
-    this.store = new DefaultMetadataStore();
+  constructor(
+    options?: FactoryOptions,
+    private store: BaseMetadataStore = new DefaultMetadataStore()
+  ) {
     this.options = {
       ...this.DEFAULT_OPTIONS,
       ...(options || {}),
