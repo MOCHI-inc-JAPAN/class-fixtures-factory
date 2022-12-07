@@ -26,8 +26,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsc -p ./tsconfig.json --watch",
-    "build": "tsc -p ./tsconfig.json",
+    "start": "rollup -c rollup.config.mjs --watch",
+    "build": "rollup -c rollup.config.mjs ",
     "test": "jest",
     "lint": "eslint **/*.{js,jsx,ts,tsx}",
     "lint:fix": "eslint --fix **/*.{js,jsx,ts,tsx}",
