@@ -75,7 +75,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
     const decorator = this.getFixtureDecorator(prop);
     const meta: Partial<PropertyMetadata> = {
       name: prop.name,
-      scalar: prop.typeClassification === 'Primitive',
+      scalar: prop.typeClassification === 'Primitive' && prop.type !== Array,
     };
     if (decorator) {
       if (typeof decorator === 'function') {
@@ -92,7 +92,6 @@ export class DefaultMetadataStore extends BaseMetadataStore {
           if (Array.isArray(inputType)) {
             inputType = inputType[0];
             meta.array = true;
-            meta.scalar = false;
           }
           if (!inputType.prototype) {
             throw new Error(
