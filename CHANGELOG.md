@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0
+
+### Minor Changes
+
+- ee2f18d: enhanse circular dependencies and fix to inject fixtures to get's function
+
 ## 0.0.5
 
 ### Patch Changes
