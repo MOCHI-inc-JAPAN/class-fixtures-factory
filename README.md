@@ -129,6 +129,11 @@ The `options` parameter can take:
   ![](debug.png)
 
 
+* `maxReflectionCallDepth` (number)
+  Nested input or object limit count to allow to call deeper association fixture generation.
+  The default value is 100. (Even if this limit is not set, this library stops circular references.)
+
+
 #### Assigner
 
 You can provide a function to define how values are assigned to generated objects.
@@ -142,7 +147,7 @@ factory.setAssigner(assigner);
 
 ### API
 
-See the API docs page [here](./docs/markdown/index.md).
+WIP
 
 
 ### For Babel envrironement

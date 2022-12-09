@@ -23,6 +23,7 @@ type DeepPartial<T> = {
 };
 
 export interface FactoryResult<T> {
+  maxReflectionCallDepth: number;
   one: () => T;
   many: (x: number) => T[];
   with: (input: DeepPartial<T>) => FactoryResult<T>;
@@ -39,7 +40,7 @@ export class FixtureFactory {
   private classTypes: Record<string, Class> = {};
   private DEFAULT_OPTIONS: Required<FactoryOptions> = {
     logging: false,
-    maxReflectionCallDepth: 4,
+    maxReflectionCallDepth: 100,
   };
   private options!: Required<FactoryOptions>;
   private loggers: FactoryLogger[] = [];
@@ -136,13 +137,20 @@ export class FixtureFactory {
    * Generate fixtures
    * @param classType
    */
-  make<T extends Class>(classType: T): FactoryResult<InstanceType<T>> {
+  make<T extends Class>(
+    classType: T
+    // options?: {
+    //   maxReflectionCallDepth?: number;
+    // }
+  ): FactoryResult<InstanceType<T>> {
     this.store.make(classType);
     const meta = this.store.get(classType);
     let propsToIgnore: string[] = [];
     let userInput: DeepPartial<T> = {};
 
+    // TODO: Change closs instance for eacth factory maxReflectionCallDepth
     const result: FactoryResult<InstanceType<T>> = {
+      maxReflectionCallDepth: this.options.maxReflectionCallDepth,
       one: () => {
         let error = false;
         let object: any = {};
@@ -211,7 +219,7 @@ export class FixtureFactory {
     meta: ClassMetadata,
     depth: number
   ): any {
-    const stop = depth > this.options.maxReflectionCallDepth;
+    const stop = depth >= this.options.maxReflectionCallDepth;
     if (prop.input) {
       if (stop && !prop.scalar) {
         this.logger().onStopGeneration(prop, {});
@@ -277,7 +285,7 @@ export class FixtureFactory {
             scalar: true,
           },
           meta,
-          depth + 1
+          depth
         )
       );
     }
@@ -288,7 +296,7 @@ export class FixtureFactory {
           array: false,
         },
         meta,
-        depth + 1
+        depth
       )
     );
   }
