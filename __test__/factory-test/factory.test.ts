@@ -1,5 +1,5 @@
-import { FixtureFactory, Assigner } from '../src/FixtureFactory';
-import { Fixture } from '../src/decorators/Fixture';
+import { FixtureFactory, Assigner } from '../../src/FixtureFactory';
+import { Fixture } from '../../src/decorators/Fixture';
 import {
   IsIn,
   Equals,
