@@ -233,40 +233,6 @@ describe(`FixtureFactory`, () => {
       expect(typeof person.book.title).toBe('string');
     });
 
-    it(`class prevent circular ref one to one`, () => {
-      class Book {
-        @Fixture()
-        title!: string;
-        @Fixture({ type: () => Person })
-        author!: Person;
-      }
-      class Person {
-        @Fixture({ type: () => Book })
-        book!: Book;
-      }
-      factory.register([Person, Book]);
-
-      const person = factory.make(Person).one();
-      expect(person.book).toBeInstanceOf(Book);
-      expect(person.book.author).toBeUndefined();
-    });
-
-    it(`class [many to many]`, () => {
-      class Book {
-        @Fixture({ type: () => [BookTag] })
-        tags!: BookTag[];
-      }
-      class BookTag {
-        @Fixture({ type: () => [Book] })
-        books!: Book[];
-      }
-      factory.register([BookTag, Book]);
-
-      const book = factory.make(Book).one();
-      expect(book.tags[0]).toBeInstanceOf(BookTag);
-      expect(book.tags[0].books).toBeUndefined();
-    });
-
     it(`multi-level nesting`, () => {
       class BookTagCategory {
         @Fixture()
@@ -347,57 +313,6 @@ describe(`FixtureFactory`, () => {
         Array.isArray(author.books[0].tags) && author.books[0].tags.length === 0
       ).toBeTruthy();
       expect(author.books[0].title).toBeTruthy();
-    });
-
-    it(`avoid circular relation many to many`, () => {
-      let factory = new FixtureFactory({ maxReflectionCallDepth: 5 });
-
-      class Book {
-        @Fixture()
-        title!: string;
-        @Fixture({ type: () => [Person] })
-        author!: Person[];
-      }
-      class Person {
-        @Fixture({ type: () => [Book] })
-        book!: Book[];
-      }
-
-      factory.register([Person, Book]);
-
-      let author = factory.make(Person).one();
-      let book = factory.make(Book).one();
-
-      expect(author).toBeTruthy();
-      expect(book).toBeTruthy();
-    });
-
-    it(`avoid circular relation one to many`, () => {
-      // NOTE: One to many relationship depends on order, many relationship
-      // must be defined as first. Or define manuarly value.
-      let factory = new FixtureFactory({ maxReflectionCallDepth: 5 });
-
-      class Person {
-        @Fixture({ type: () => [Book] })
-        book!: Book[];
-        @Fixture()
-        name!: string;
-      }
-
-      class Book {
-        @Fixture()
-        title!: string;
-        @Fixture({ type: () => Person })
-        author!: Person;
-      }
-
-      factory.register([Person, Book]);
-
-      let author = factory.make(Person).one();
-      let book = factory.make(Book).one();
-
-      expect(author).toBeTruthy();
-      expect(book).toBeTruthy();
     });
 
     it(`custom assigner`, () => {
