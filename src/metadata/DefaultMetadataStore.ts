@@ -85,7 +85,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
         meta.input = () => decorator;
       } else if (typeof decorator === 'object') {
         if (decorator.ignore) return null;
-        meta.input = decorator.get;
+        meta.input = decorator?.get?.bind(faker);
         meta.min = decorator.min || 1;
         meta.max = decorator.max || 3;
         let inputType: any = decorator.type?.();

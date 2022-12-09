@@ -1,17 +1,17 @@
-import {
-  BaseMetadataStore,
-  DefaultMetadataStore,
-  ClassMetadata,
-  PropertyMetadata,
-} from './metadata';
-import { Class } from './common/typings';
 import { faker } from '@faker-js/faker';
 import chalk from 'chalk';
+import { Class } from './common/typings';
 import { FactoryLogger } from './FactoryLogger';
+import {
+  BaseMetadataStore,
+  ClassMetadata,
+  DefaultMetadataStore,
+  PropertyMetadata,
+} from './metadata';
 
 export interface FactoryOptions {
   logging?: boolean;
-  maxDepth?: number;
+  maxReflectionCallDepth?: number;
 }
 
 type DeepPartial<T> = {
@@ -37,12 +37,11 @@ export type Assigner = (
 
 export class FixtureFactory {
   private classTypes: Record<string, Class> = {};
-  private DEFAULT_OPTIONS: FactoryOptions = {
+  private DEFAULT_OPTIONS: Required<FactoryOptions> = {
     logging: false,
-    maxDepth: 4,
+    maxReflectionCallDepth: 4,
   };
-  private options!: FactoryOptions;
-  private depthness: string[] = [];
+  private options!: Required<FactoryOptions>;
   private loggers: FactoryLogger[] = [];
   private assigner: Assigner = this.defaultAssigner.bind(this);
   //private cvAdapter = new ClassValidatorAdapter();
@@ -143,8 +142,6 @@ export class FixtureFactory {
     let propsToIgnore: string[] = [];
     let userInput: DeepPartial<T> = {};
 
-    this.depthness = [];
-
     const result: FactoryResult<InstanceType<T>> = {
       one: () => {
         let error = false;
@@ -153,7 +150,7 @@ export class FixtureFactory {
         this.newLogger(meta);
 
         try {
-          object = this._make(meta, classType, propsToIgnore);
+          object = this._make(meta, classType, 1, propsToIgnore);
           for (const [key, value] of Object.entries(userInput)) {
             object[key] = value;
           }
@@ -192,15 +189,14 @@ export class FixtureFactory {
   protected _make(
     meta: ClassMetadata,
     classType: Class,
+    depth: number,
     propsToIgnore: string[] = []
   ) {
-    this.depthness.push(classType.name);
-
     const object = new classType();
     for (const prop of meta.properties) {
       if (propsToIgnore.includes(prop.name)) continue;
       if (this.shouldIgnoreProperty(prop)) continue;
-      this.assigner(prop, object, this.makeProperty(prop, meta));
+      this.assigner(prop, object, this.makeProperty(prop, meta, depth));
     }
     return object;
   }
@@ -210,8 +206,17 @@ export class FixtureFactory {
     return false;
   }
 
-  protected makeProperty(prop: PropertyMetadata, meta: ClassMetadata): any {
+  protected makeProperty(
+    prop: PropertyMetadata,
+    meta: ClassMetadata,
+    depth: number
+  ): any {
+    const stop = depth > this.options.maxReflectionCallDepth;
     if (prop.input) {
+      if (stop && !prop.scalar) {
+        this.logger().onStopGeneration(prop, {});
+        return {};
+      }
       this.logger().onCustomProp(prop);
       return prop.input();
     }
@@ -220,9 +225,17 @@ export class FixtureFactory {
       this.logger().onNormalProp(prop, value);
       return value;
     } else if (prop.array) {
-      return this.makeArrayProp(prop, meta);
+      if (stop) {
+        this.logger().onStopGeneration(prop, []);
+        return [];
+      }
+      return this.makeArrayProp(prop, meta, depth);
     }
-    return this.makeObjectProp(meta, prop);
+    if (stop) {
+      this.logger().onStopGeneration(prop, {});
+      return {};
+    }
+    return this.makeObjectProp(meta, prop, depth);
   }
 
   protected makeScalarProperty(prop: PropertyMetadata) {
@@ -246,7 +259,11 @@ export class FixtureFactory {
     throw new Error(`Can't generate a value for this scalar`);
   }
 
-  private makeArrayProp(prop: PropertyMetadata, meta: ClassMetadata) {
+  private makeArrayProp(
+    prop: PropertyMetadata,
+    meta: ClassMetadata,
+    depth: number
+  ) {
     const amount = faker.datatype.number({
       max: prop.max,
       min: prop.min,
@@ -259,7 +276,8 @@ export class FixtureFactory {
             array: false,
             scalar: true,
           },
-          meta
+          meta,
+          depth + 1
         )
       );
     }
@@ -269,12 +287,17 @@ export class FixtureFactory {
           ...prop,
           array: false,
         },
-        meta
+        meta,
+        depth + 1
       )
     );
   }
 
-  private makeObjectProp(meta: ClassMetadata, prop: PropertyMetadata) {
+  private makeObjectProp(
+    meta: ClassMetadata,
+    prop: PropertyMetadata,
+    depth: number
+  ) {
     const refClassMeta = this.store.get(prop.type);
     const props = this.findRefSideProps(meta, prop);
 
@@ -284,6 +307,7 @@ export class FixtureFactory {
     const value = this._make(
       refClassMeta,
       this.classTypes[prop.type],
+      depth + 1,
       props.map((p) => p.name)
     );
 
