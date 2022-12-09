@@ -21,6 +21,9 @@ export class DefaultMetadataStore extends BaseMetadataStore {
    * @param classType
    */
   make(classType: Class): ClassMetadata {
+    // WARNING: '@plumier/reflect depends on initialized order when relations have circular references.
+    // If parent relation class is initialized the typeClassification may be Privimitive instead of Class.
+    // This may affect one to many relations and cause bug.
     const rMetadata = reflect(classType);
     const cvMetadata = this.cvAdapter.extractMedatada(classType);
     const unknownTypes = new Set<string>();

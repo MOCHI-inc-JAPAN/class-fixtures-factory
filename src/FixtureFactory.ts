@@ -301,6 +301,7 @@ export class FixtureFactory {
     );
   }
 
+  // WARNING: This avoid only direct circular references.
   private makeObjectProp(
     meta: ClassMetadata,
     prop: PropertyMetadata,

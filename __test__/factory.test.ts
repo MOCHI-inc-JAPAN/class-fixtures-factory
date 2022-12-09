@@ -233,7 +233,7 @@ describe(`FixtureFactory`, () => {
       expect(typeof person.book.title).toBe('string');
     });
 
-    it(`class [prevent circular ref]`, () => {
+    it(`class prevent circular ref one to one`, () => {
       class Book {
         @Fixture()
         title!: string;
@@ -297,10 +297,107 @@ describe(`FixtureFactory`, () => {
       factory.register([Author, Book, BookTag, BookTagCategory]);
 
       const author = factory.make(Author).one();
-      console.log(author);
       expect(author.books[0]).toBeDefined();
       expect(author.books[0].tags[0]).toBeDefined();
       expect(author.books[0].tags[0].category).toBeDefined();
+    });
+
+    it(`multi-level nesting with maxReflectionCallDepth`, () => {
+      let factory = new FixtureFactory({ maxReflectionCallDepth: 1 });
+
+      class BookTagCategory {
+        @Fixture()
+        label!: string;
+      }
+
+      class BookTag {
+        @Fixture()
+        label!: string;
+        @Fixture({ type: () => BookTagCategory })
+        category!: BookTagCategory;
+      }
+
+      class Book {
+        @Fixture()
+        title!: string;
+        @Fixture({ type: () => [BookTag] })
+        tags!: BookTag[];
+      }
+
+      class Author {
+        @Fixture()
+        name!: string;
+        @Fixture({ type: () => [Book] })
+        books!: Book[];
+      }
+
+      factory.register([Author, Book, BookTag, BookTagCategory]);
+      let author = factory.make(Author).one();
+
+      expect(
+        Array.isArray(author.books) && author.books.length === 0
+      ).toBeTruthy();
+      expect(author.name).toBeTruthy();
+
+      factory = new FixtureFactory({ maxReflectionCallDepth: 2 });
+      factory.register([Author, Book, BookTag, BookTagCategory]);
+
+      author = factory.make(Author).one();
+      expect(
+        Array.isArray(author.books[0].tags) && author.books[0].tags.length === 0
+      ).toBeTruthy();
+      expect(author.books[0].title).toBeTruthy();
+    });
+
+    it(`avoid circular relation many to many`, () => {
+      let factory = new FixtureFactory({ maxReflectionCallDepth: 5 });
+
+      class Book {
+        @Fixture()
+        title!: string;
+        @Fixture({ type: () => [Person] })
+        author!: Person[];
+      }
+      class Person {
+        @Fixture({ type: () => [Book] })
+        book!: Book[];
+      }
+
+      factory.register([Person, Book]);
+
+      let author = factory.make(Person).one();
+      let book = factory.make(Book).one();
+
+      expect(author).toBeTruthy();
+      expect(book).toBeTruthy();
+    });
+
+    it(`avoid circular relation one to many`, () => {
+      // NOTE: One to many relationship depends on order, many relationship
+      // must be defined as first. Or define manuarly value.
+      let factory = new FixtureFactory({ maxReflectionCallDepth: 5 });
+
+      class Person {
+        @Fixture({ type: () => [Book] })
+        book!: Book[];
+        @Fixture()
+        name!: string;
+      }
+
+      class Book {
+        @Fixture()
+        title!: string;
+        @Fixture({ type: () => Person })
+        author!: Person;
+      }
+
+      factory.register([Person, Book]);
+
+      let author = factory.make(Person).one();
+      let book = factory.make(Book).one();
+
+      expect(author).toBeTruthy();
+      expect(book).toBeTruthy();
     });
 
     it(`custom assigner`, () => {
