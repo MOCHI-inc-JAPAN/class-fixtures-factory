@@ -105,6 +105,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
           const { name } = inputType;
           if (!['string', 'number', 'boolean'].includes(name.toLowerCase())) {
             meta.type = name;
+            meta.scalar = false;
           } else {
             meta.type = name.toLowerCase();
           }

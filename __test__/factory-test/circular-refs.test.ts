@@ -1,5 +1,6 @@
 import { FixtureFactory } from '../../src/FixtureFactory';
 import { Fixture } from '../../src/decorators/Fixture';
+import { reflect } from '@plumier/reflect';
 
 describe(`Circular Refs`, () => {
   const factory = new FixtureFactory({ logging: false });
@@ -12,15 +13,24 @@ describe(`Circular Refs`, () => {
         @Fixture({ type: () => Person })
         author!: Person;
       }
+
       class Person {
         @Fixture({ type: () => Book })
         book!: Book;
+        @Fixture()
+        name!: string;
       }
+
       factory.register([Person, Book]);
 
       const person = factory.make(Person).one();
       expect(person.book).toBeInstanceOf(Book);
       expect(person.book.author).toBeUndefined();
+      expect(person.book.title).not.toBeUndefined();
+
+      const book = factory.make(Book).one();
+      expect(book.author).toBeInstanceOf(Person);
+      expect(book.author).toBeUndefined();
     });
 
     it(`avoid circular relation many to many`, () => {
