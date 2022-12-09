@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+### Patch Changes
+
+- cdde267: bugfix circular references
+
 ## 0.1.0
 
 ### Minor Changes
