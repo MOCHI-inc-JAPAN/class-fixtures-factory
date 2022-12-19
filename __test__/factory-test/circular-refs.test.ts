@@ -30,7 +30,7 @@ describe(`Circular Refs`, () => {
 
       const book = factory.make(Book).one();
       expect(book.author).toBeInstanceOf(Person);
-      expect(book.author).toBeUndefined();
+      expect(book.author).toBeTruthy();
     });
 
     it(`avoid circular relation many to many`, () => {

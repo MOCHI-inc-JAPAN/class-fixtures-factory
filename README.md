@@ -98,7 +98,7 @@ export class Author extends BaseEntity {
   @Fixture(faker => faker.name.firstName())
   firstName: string;
 
-  @Fixture('{{name.lastName}}')
+  @Fixture('FirstName')
   lastName: string;
 
   @Fixture(() => 24)
@@ -110,8 +110,14 @@ export class Author extends BaseEntity {
   // same as not using @Fixture at all
   @Fixture({ ignore: true })
   address: Address;
+
+  // get function also same function interface
+  @Fixture((_, author) => author.books[0].title)
+  favoriteBook: string;
 }
 ```
+
+The second arg is `@Fixture` is fixture it self reference after initialized, so if you want computed dummy data,
 
 ### Factory Options
 

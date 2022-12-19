@@ -45,7 +45,6 @@ export class FixtureFactory {
   private options!: Required<FactoryOptions>;
   private loggers: FactoryLogger[] = [];
   private assigner: Assigner = this.defaultAssigner.bind(this);
-  //private cvAdapter = new ClassValidatorAdapter();
 
   constructor(
     options?: FactoryOptions,
@@ -58,7 +57,13 @@ export class FixtureFactory {
   }
 
   private defaultAssigner(prop: PropertyMetadata, object: any, value: any) {
-    object[prop.name] = value;
+    if (typeof value === 'function') {
+      Object.defineProperty(object, prop.name, {
+        get: value.bind(object, object),
+      });
+    } else {
+      object[prop.name] = value;
+    }
   }
 
   /**
@@ -194,6 +199,11 @@ export class FixtureFactory {
     return result;
   }
 
+  protected _serialize(object: any) {
+    // TODO: enable js plaing object
+    return object;
+  }
+
   protected _make(
     meta: ClassMetadata,
     classType: Class,
@@ -206,7 +216,7 @@ export class FixtureFactory {
       if (this.shouldIgnoreProperty(prop)) continue;
       this.assigner(prop, object, this.makeProperty(prop, meta, depth));
     }
-    return object;
+    return this._serialize(object);
   }
 
   protected shouldIgnoreProperty(prop: PropertyMetadata) {
@@ -223,10 +233,10 @@ export class FixtureFactory {
     if (prop.input) {
       if (stop && !prop.scalar) {
         this.logger().onStopGeneration(prop, {});
-        return {};
+        return null;
       }
       this.logger().onCustomProp(prop);
-      return prop.input();
+      return prop.input;
     }
     if (prop.scalar) {
       const value = this.makeScalarProperty(prop);
@@ -241,7 +251,7 @@ export class FixtureFactory {
     }
     if (stop) {
       this.logger().onStopGeneration(prop, {});
-      return {};
+      return null;
     }
     return this.makeObjectProp(meta, prop, depth);
   }

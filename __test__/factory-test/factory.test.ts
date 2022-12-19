@@ -657,5 +657,63 @@ describe(`FixtureFactory`, () => {
         expect(typeof dummy.val).toBe('string');
       });
     });
+
+    describe(`accecible and enable other property value initialized`, () => {
+      it(`multiple property for function format`, () => {
+        class Dummy {
+          @Fixture((_, obj) => {
+            return `${obj.firstName} ${obj.lastName}`;
+          })
+          fullname!: string;
+          @Fixture('Bar')
+          lastName!: string;
+          @Fixture('Foo')
+          firstName!: string;
+        }
+        factory.register([Dummy]);
+
+        const dummy = factory.make(Dummy).one();
+        expect(dummy.fullname).toBe('Foo Bar');
+      });
+
+      it(`multiple property for get function`, () => {
+        class Dummy {
+          @Fixture({
+            get: (_, obj) => {
+              return `${obj.firstName} ${obj.lastName}`;
+            },
+          })
+          fullname!: string;
+          @Fixture('Bar')
+          lastName!: string;
+          @Fixture('Foo')
+          firstName!: string;
+        }
+        factory.register([Dummy]);
+
+        const dummy = factory.make(Dummy).one();
+        expect(dummy.fullname).toBe('Foo Bar');
+      });
+
+      it(`reference available`, () => {
+        class Book {
+          @Fixture('Wonderful Book')
+          title!: string;
+        }
+        class Person {
+          @Fixture()
+          book!: Book;
+          @Fixture({
+            type: () => Array,
+            get: (_, obj) => [obj.book.title],
+          })
+          bookWritten!: string[];
+        }
+        factory.register([Person, Book]);
+
+        const person = factory.make(Person).one();
+        expect(person.bookWritten).toEqual(['Wonderful Book']);
+      });
+    });
   });
 });
