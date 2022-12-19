@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+### Minor Changes
+
+- cebdbe2: chore: value direct input initial value is not computed
+
 ## 0.3.0
 
 ### Minor Changes
