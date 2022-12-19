@@ -120,6 +120,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
         }
       } else if (typeof decoratorInput !== 'undefined') {
         meta.input = () => decoratorInput;
+        meta.computed = false;
       }
     }
     if (!meta.type) {
