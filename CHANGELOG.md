@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- 00df2eb: compulted flag support
+
 ## 0.2.0
 
 ### Minor Changes
