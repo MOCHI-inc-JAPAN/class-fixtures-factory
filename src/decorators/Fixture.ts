@@ -3,6 +3,10 @@ import { Faker } from '@faker-js/faker';
 
 export type FixtureOptions =
   | string
+  | number
+  | symbol
+  | boolean
+  | Array<any>
   | ((faker: Faker, obj?: any) => any | undefined)
   | (() => any)
   | {
@@ -11,6 +15,7 @@ export type FixtureOptions =
       enum?: object;
       min?: number;
       max?: number;
+      computed?: boolean;
       get?: ((faker: Faker, obj?: any) => any) | (() => any);
     };
 

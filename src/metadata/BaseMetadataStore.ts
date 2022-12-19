@@ -13,6 +13,7 @@ export interface PropertyMetadata {
   items?: any[];
   array?: boolean;
   ignore?: boolean;
+  computed?: boolean;
   min?: number;
   max?: number;
   input?: (...args: any[]) => any;
