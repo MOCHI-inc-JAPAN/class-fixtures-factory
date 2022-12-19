@@ -748,7 +748,7 @@ describe(`FixtureFactory`, () => {
       function sequenceId() {
         let id = 0;
         // NOTE: getterをvalueに上書きしてinstance内で一意にしている
-        return (_: any, _obj: any, loader = false) => {
+        return (_: any, _obj: any, meta: any) => {
           return ++id;
         };
       }
@@ -764,6 +764,19 @@ describe(`FixtureFactory`, () => {
       const personFactory = factory.make(Author);
       expect(personFactory.one().name).toEqual('1');
       expect(personFactory.one().name).toEqual('2');
+    });
+
+    it(`accessible meta`, () => {
+      class Author {
+        @Fixture()
+        id!: string;
+        @Fixture((_, _obj, meta) => {
+          return meta.name;
+        })
+        foo!: string;
+      }
+      const personFactory = factory.make(Author);
+      expect(personFactory.one().foo).toEqual('foo');
     });
   });
 });

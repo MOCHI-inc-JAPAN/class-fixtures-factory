@@ -60,7 +60,7 @@ export class FixtureFactory {
     if (typeof value === 'function') {
       if (prop.computed) {
         Object.defineProperty(object, prop.name, {
-          get: value.bind(object, object),
+          get: value.bind(object, object, prop),
         });
       } else {
         object[prop.name] = value();
