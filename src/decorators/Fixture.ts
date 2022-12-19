@@ -3,7 +3,7 @@ import { Faker } from '@faker-js/faker';
 
 export type FixtureOptions =
   | string
-  | ((faker: Faker, obj?: any) => string | number | undefined)
+  | ((faker: Faker, obj?: any) => any | undefined)
   | (() => any)
   | {
       type?: () => object;
