@@ -11,9 +11,7 @@ export type FixtureOptions =
       enum?: object;
       min?: number;
       max?: number;
-      get?:
-        | ((faker: Faker, obj?: any) => string | number | undefined)
-        | (() => any);
+      get?: ((faker: Faker, obj?: any) => any) | (() => any);
     };
 
 /**
