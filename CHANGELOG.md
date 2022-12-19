@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- d63c2c6: new arg for get function is instance ref
+
 ## 0.1.1
 
 ### Patch Changes
