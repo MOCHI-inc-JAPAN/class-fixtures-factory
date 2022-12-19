@@ -657,5 +657,24 @@ describe(`FixtureFactory`, () => {
         expect(typeof dummy.val).toBe('string');
       });
     });
+
+    describe(`accecible and enable other property value initialized`, () => {
+      it(`throws if type can't be resolved`, () => {
+        class Dummy {
+          @Fixture((_, obj) => {
+            return `${obj.firstName} ${obj.lastName}`;
+          })
+          fullname!: string;
+          @Fixture('Bar')
+          lastName!: string;
+          @Fixture('Foo')
+          firstName!: string;
+        }
+        factory.register([Dummy]);
+
+        const dummy = factory.make(Dummy).one();
+        expect(dummy.fullname).toBe('Foo Bar');
+      });
+    });
   });
 });
