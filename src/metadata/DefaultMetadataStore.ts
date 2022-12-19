@@ -75,23 +75,27 @@ export class DefaultMetadataStore extends BaseMetadataStore {
   private makePropertyMetadata(
     prop: PropertyReflection
   ): PropertyMetadata | null {
-    const decorator = this.getFixtureDecorator(prop);
+    const decoratorInput = this.getFixtureDecorator(prop);
     const meta: Partial<PropertyMetadata> = {
       name: prop.name,
       scalar: prop.typeClassification === 'Primitive' && prop.type !== Array,
+      computed: true,
     };
 
-    if (decorator) {
-      if (typeof decorator === 'function') {
-        meta.input = decorator.bind(decorator, faker);
-      } else if (typeof decorator === 'string') {
-        meta.input = () => decorator;
-      } else if (typeof decorator === 'object') {
-        if (decorator.ignore) return null;
-        meta.input = decorator?.get?.bind(decorator, faker);
-        meta.min = decorator.min || 1;
-        meta.max = decorator.max || 3;
-        let inputType: any = decorator.type?.();
+    if (decoratorInput || decoratorInput === false) {
+      if (typeof decoratorInput === 'function') {
+        meta.input = decoratorInput.bind(decoratorInput, faker);
+      } else if (
+        !Array.isArray(decoratorInput) &&
+        typeof decoratorInput === 'object' &&
+        decoratorInput !== null
+      ) {
+        if (decoratorInput.ignore) return null;
+        meta.computed = decoratorInput.computed ?? meta.computed;
+        meta.input = decoratorInput?.get?.bind(decoratorInput, faker);
+        meta.min = decoratorInput.min || 1;
+        meta.max = decoratorInput.max || 3;
+        let inputType: any = decoratorInput.type?.();
         if (inputType) {
           if (Array.isArray(inputType)) {
             inputType = inputType[0];
@@ -110,10 +114,12 @@ export class DefaultMetadataStore extends BaseMetadataStore {
             meta.type = name.toLowerCase();
           }
         }
-        if (decorator.enum) {
+        if (decoratorInput.enum) {
           meta.enum = true;
-          meta.items = getEnumValues(decorator.enum);
+          meta.items = getEnumValues(decoratorInput.enum);
         }
+      } else if (typeof decoratorInput !== 'undefined') {
+        meta.input = () => decoratorInput;
       }
     }
     if (!meta.type) {

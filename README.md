@@ -98,6 +98,7 @@ export class Author extends BaseEntity {
   @Fixture(faker => faker.name.firstName())
   firstName: string;
 
+  // RESTRICTION: This format doesn't allow `false` boolean and null value, use function style for them.
   @Fixture('FirstName')
   lastName: string;
 
@@ -114,10 +115,18 @@ export class Author extends BaseEntity {
   // get function also same function interface
   @Fixture((_, author) => author.books[0].title)
   favoriteBook: string;
+
+  // get function also same function interface
+  @Fixture({
+    computed: false,
+    get: (_, author, metadata) => randomUniqueName()
+  })
+  favoriteBook: string;
 }
 ```
 
-The second arg is `@Fixture` is fixture it self reference after initialized, so if you want computed dummy data,
+The second arg is `@Fixture` is fixture it self reference after initialized, so if you want computed dummy data. If you want to stop this feature and only get fix value initialized once, set computed flag false. The third arg is metadata from reflection. It's rare to use, but you can use this when you want to create generator depends on prop name, so on.
+
 
 ### Factory Options
 

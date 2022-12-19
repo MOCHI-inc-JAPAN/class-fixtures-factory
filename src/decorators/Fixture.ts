@@ -1,9 +1,14 @@
 import { decorateProperty, mergeDecorator } from '@plumier/reflect';
 import { Faker } from '@faker-js/faker';
+import { PropertyMetadata } from '../metadata/BaseMetadataStore';
 
 export type FixtureOptions =
   | string
-  | ((faker: Faker, obj?: any) => any | undefined)
+  | number
+  | symbol
+  | boolean
+  | Array<any>
+  | ((faker: Faker, obj: any, propMeta: PropertyMetadata) => any | undefined)
   | (() => any)
   | {
       type?: () => object;
@@ -11,7 +16,10 @@ export type FixtureOptions =
       enum?: object;
       min?: number;
       max?: number;
-      get?: ((faker: Faker, obj?: any) => any) | (() => any);
+      computed?: boolean;
+      get?:
+        | ((faker: Faker, obj: any, propMeta: PropertyMetadata) => any)
+        | (() => any);
     };
 
 /**

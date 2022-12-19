@@ -58,9 +58,13 @@ export class FixtureFactory {
 
   private defaultAssigner(prop: PropertyMetadata, object: any, value: any) {
     if (typeof value === 'function') {
-      Object.defineProperty(object, prop.name, {
-        get: value.bind(object, object),
-      });
+      if (prop.computed) {
+        Object.defineProperty(object, prop.name, {
+          get: value.bind(object, object, prop),
+        });
+      } else {
+        object[prop.name] = value();
+      }
     } else {
       object[prop.name] = value;
     }

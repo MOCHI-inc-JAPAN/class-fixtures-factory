@@ -715,5 +715,68 @@ describe(`FixtureFactory`, () => {
         expect(person.bookWritten).toEqual(['Wonderful Book']);
       });
     });
+
+    it(`initialize premitive @Fixture(number)`, () => {
+      class Author {
+        @Fixture(1)
+        foo: any;
+      }
+      const person = factory.make(Author).one();
+      expect(person.foo).toBe(1);
+    });
+
+    it(`initialize premitive @Fixture(Array)`, () => {
+      class Author {
+        @Fixture([1])
+        foo: any;
+      }
+      const person = factory.make(Author).one();
+      expect(person.foo).toEqual([1]);
+    });
+
+    it(`initialize premitive @Fixture(symbol)`, () => {
+      const sym = Symbol('test');
+      class Author {
+        @Fixture(sym)
+        foo: any;
+      }
+      const person = factory.make(Author).one();
+      expect(person.foo).toEqual(sym);
+    });
+
+    it(`computed false only initialized once`, () => {
+      function sequenceId() {
+        let id = 0;
+        // NOTE: getterをvalueに上書きしてinstance内で一意にしている
+        return (_: any, _obj: any, meta: any) => {
+          return ++id;
+        };
+      }
+      class Author {
+        @Fixture({
+          get: sequenceId(),
+          computed: false,
+        })
+        id!: any;
+        @Fixture((_, obj) => `${obj.id}`)
+        name!: string;
+      }
+      const personFactory = factory.make(Author);
+      expect(personFactory.one().name).toEqual('1');
+      expect(personFactory.one().name).toEqual('2');
+    });
+
+    it(`accessible meta`, () => {
+      class Author {
+        @Fixture()
+        id!: string;
+        @Fixture((_, _obj, meta) => {
+          return meta.name;
+        })
+        foo!: string;
+      }
+      const personFactory = factory.make(Author);
+      expect(personFactory.one().foo).toEqual('foo');
+    });
   });
 });
