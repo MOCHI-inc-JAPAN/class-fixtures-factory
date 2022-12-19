@@ -223,9 +223,10 @@ export class FixtureFactory {
     if (prop.input) {
       if (stop && !prop.scalar) {
         this.logger().onStopGeneration(prop, {});
-        return {};
+        return null;
       }
       this.logger().onCustomProp(prop);
+      console.log(prop);
       return prop.input();
     }
     if (prop.scalar) {
@@ -241,7 +242,7 @@ export class FixtureFactory {
     }
     if (stop) {
       this.logger().onStopGeneration(prop, {});
-      return {};
+      return null;
     }
     return this.makeObjectProp(meta, prop, depth);
   }
