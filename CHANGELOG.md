@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2
+
+### Patch Changes
+
+- b19b910: deploy safety
+
 ## 0.4.1
 
 ### Patch Changes
