@@ -53,7 +53,7 @@ jobs:
           git config --local user.name ${{ secrets.BOT_NAME }}
       - name: Setup npm config
         run: |
-          pnpm config set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
+          pnpm config set '//registry.npmjs.org/:_authToken' '${NPM_TOKEN}'
           pnpm config set publish-branch ${GITHUB_REF#refs/heads/}
         shell: bash
 
@@ -65,3 +65,4 @@ jobs:
           publish: pnpm -r publish --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
