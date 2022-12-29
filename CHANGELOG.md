@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+### Patch Changes
+
+- 46de186: chore: safety deployment
+
 ## 0.4.0
 
 ### Minor Changes
