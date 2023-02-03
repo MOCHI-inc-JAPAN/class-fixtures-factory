@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0
+
+### Major Changes
+
+- 779ebb6: add association decorator
+
 ## 0.4.2
 
 ### Patch Changes
