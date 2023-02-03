@@ -1,6 +1,6 @@
 import { AssociationDecoratorMetadata } from 'decorators/Association';
 import { Class } from '../common/typings';
-import { reflect, PropertyReflection } from '@plumier/reflect';
+import { reflect } from '@plumier/reflect';
 
 export interface ClassMetadata {
   name: string;
