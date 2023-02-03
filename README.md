@@ -28,6 +28,38 @@ seeding or for testing.
 
 ### General
 
+#### Class Factory Usage
+
+```ts
+@Association(() => [Author, Biography])
+class Book {
+  @Fixture({ type: () => [Author] })
+  authors!: Author[];
+}
+
+class Author {
+  @Fixture({ type: () => [Book] })
+  books!: Book[];
+  @Fixture({ type: () => Biography })
+  biography!: Biography;
+}
+
+class Biography {
+  @Fixture('test')
+  title!: string;
+}
+
+class BookFactory extends FactoryCreator(Book, { maxReflectionCallDepth: 3 }) {}
+const bookFactory = new BookFactory();
+
+const bookA = bookFactory.create();
+const bookB = bookFactory.create({...(you can specify all initial values for properties)});
+```
+
+First you define class with the properties decorated by `@Fixture`. Second, you define the factory class by FactoryCreator. If your fixture has association, you specify `@Association([Class] or () => [Class])`. When you have circular dependencies, you must specify function returns a classes' array as `@Association`'s argument.
+
+#### Singleton Factory Usage
+
 Because `class-fixtures-factory` relies on metadata, you'll have to:
 
 1. Register all the classes you're going to use
