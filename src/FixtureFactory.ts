@@ -137,8 +137,11 @@ export class FixtureFactory {
    */
   register(classTypes: Class[]) {
     for (const classType of classTypes) {
-      this.store.make(classType);
-      this.classTypes[classType.name] = classType;
+      const collectedClasses = this.store.makeWithAssociations(classType);
+      for (let collectedClass of collectedClasses) {
+        this.store.make(classType);
+        this.classTypes[collectedClass.name] = collectedClass;
+      }
     }
   }
 

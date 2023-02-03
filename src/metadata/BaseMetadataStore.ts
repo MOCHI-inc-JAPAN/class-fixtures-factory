@@ -1,4 +1,6 @@
+import { AssociationDecoratorMetadata } from 'decorators/Association';
 import { Class } from '../common/typings';
+import { reflect, PropertyReflection } from '@plumier/reflect';
 
 export interface ClassMetadata {
   name: string;
@@ -26,6 +28,27 @@ export abstract class BaseMetadataStore {
     const value = this.store[name];
     if (!value) throw new Error(`Cannot find metadata for class "${name}"`);
     return value;
+  }
+  makeWithAssociations(
+    classType: Class,
+    cache: Record<string, boolean> = {}
+  ): Class[] {
+    this.make(classType);
+    const name = classType.name;
+    if (!cache[name]) {
+      cache[name] = true;
+      const metadata = reflect(classType);
+      const associationMetadata: AssociationDecoratorMetadata | undefined =
+        metadata.decorators.find((v) => v.type === 'Association');
+      if (!associationMetadata) {
+        return [classType];
+      }
+      const assoications = associationMetadata.value
+        .map((v) => this.makeWithAssociations(v, cache))
+        .flat();
+      return [classType, ...assoications];
+    }
+    return [];
   }
   abstract make(classType: Class): ClassMetadata;
 }
