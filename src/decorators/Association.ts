@@ -1,7 +1,7 @@
-import { decorateProperty, mergeDecorator } from '@plumier/reflect';
+import { decorateClass, mergeDecorator } from '@plumier/reflect';
 import { Class } from '../common/typings';
 
-export type AssociationDecoratorValue = Array<Class>;
+export type AssociationDecoratorValue = Array<Class> | (() => Array<Class>);
 export type AssociationDecoratorMetadata = {
   type: 'Association';
   value: AssociationDecoratorValue;
@@ -14,7 +14,7 @@ export type AssociationDecoratorMetadata = {
  */
 export function Association(options?: AssociationDecoratorValue) {
   return mergeDecorator(
-    decorateProperty({
+    decorateClass({
       type: 'Association',
       value: options,
     } as AssociationDecoratorMetadata)

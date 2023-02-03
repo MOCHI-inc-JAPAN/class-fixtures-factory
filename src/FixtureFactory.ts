@@ -40,7 +40,7 @@ export class FixtureFactory {
   private classTypes: Record<string, Class> = {};
   private DEFAULT_OPTIONS: Required<FactoryOptions> = {
     logging: false,
-    maxReflectionCallDepth: 100,
+    maxReflectionCallDepth: 5,
   };
   private options!: Required<FactoryOptions>;
   private loggers: FactoryLogger[] = [];

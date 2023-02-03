@@ -146,7 +146,7 @@ The `options` parameter can take:
 
 * `maxReflectionCallDepth` (number)
   Nested input or object limit count to allow to call deeper association fixture generation.
-  The default value is 100. (
+  The default value is 5. (
     Even if this limit is not set, this library stops direct circular references.
     Indirecly circular referenceds are not detected. Thus this value should set appropriately
     if you have indirect circular references.

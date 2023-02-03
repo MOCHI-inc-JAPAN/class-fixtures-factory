@@ -43,10 +43,14 @@ export abstract class BaseMetadataStore {
       if (!associationMetadata) {
         return [classType];
       }
-      const assoications = associationMetadata.value
+      const associationClasses =
+        typeof associationMetadata.value === 'function'
+          ? associationMetadata.value()
+          : associationMetadata.value;
+      const madeAssoicationClasses = associationClasses
         .map((v) => this.makeWithAssociations(v, cache))
         .flat();
-      return [classType, ...assoications];
+      return [classType, ...madeAssoicationClasses];
     }
     return [];
   }
