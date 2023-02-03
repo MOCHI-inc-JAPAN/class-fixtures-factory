@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Patch Changes
+
+- 7a0ef1e: fix export FactoryCreator and Association
+
 ## 1.0.0
 
 ### Major Changes
