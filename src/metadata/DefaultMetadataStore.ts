@@ -16,6 +16,7 @@ export class DefaultMetadataStore extends BaseMetadataStore {
   constructor(private readonly acceptPartialResult = false) {
     super();
   }
+
   /**
    * Make type metadata for a class
    * @param classType

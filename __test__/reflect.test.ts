@@ -10,7 +10,6 @@ class AnimalModel {
 
 describe('reflect type', () => {
   it('reflect', () => {
-    console.log(reflect(AnimalModel));
     expect(reflect(AnimalModel)).toBeTruthy();
   });
 });

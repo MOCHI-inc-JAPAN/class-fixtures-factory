@@ -28,6 +28,38 @@ seeding or for testing.
 
 ### General
 
+#### Class Factory Usage
+
+```ts
+@Association(() => [Author, Biography])
+class Book {
+  @Fixture({ type: () => [Author] })
+  authors!: Author[];
+}
+
+class Author {
+  @Fixture({ type: () => [Book] })
+  books!: Book[];
+  @Fixture({ type: () => Biography })
+  biography!: Biography;
+}
+
+class Biography {
+  @Fixture('test')
+  title!: string;
+}
+
+class BookFactory extends FactoryCreator(Book, { maxReflectionCallDepth: 3 }) {}
+const bookFactory = new BookFactory();
+
+const bookA = bookFactory.create();
+const bookB = bookFactory.create({...(you can specify all initial values for properties)});
+```
+
+First you define class with the properties decorated by `@Fixture`. Second, you define the factory class by FactoryCreator. If your fixture has association, you specify `@Association([Class] or () => [Class])`. When you have circular dependencies, you must specify function returns a classes' array as `@Association`'s argument.
+
+#### Singleton Factory Usage
+
 Because `class-fixtures-factory` relies on metadata, you'll have to:
 
 1. Register all the classes you're going to use
@@ -128,7 +160,9 @@ export class Author extends BaseEntity {
 The second arg is `@Fixture` is fixture it self reference after initialized, so if you want computed dummy data. If you want to stop this feature and only get fix value initialized once, set computed flag false. The third arg is metadata from reflection. It's rare to use, but you can use this when you want to create generator depends on prop name, so on.
 
 
-### Factory Options
+## API
+
+### FixtureFactory
 
 You can pass an `options` object to the `FixtureFactory` constructor:
 
@@ -146,28 +180,50 @@ The `options` parameter can take:
 
 * `maxReflectionCallDepth` (number)
   Nested input or object limit count to allow to call deeper association fixture generation.
-  The default value is 100. (
+  The default value is 5. (
     Even if this limit is not set, this library stops direct circular references.
     Indirecly circular referenceds are not detected. Thus this value should set appropriately
     if you have indirect circular references.
   )
 
+### FactoryCreator
 
-#### Assigner
+FactoryCreator can generate class instance like object values factory class with resolved associations.
+The same option of FixtureFactory can be specified. This can be extended by inheritance for association templates like trait. As default, FactoryCreator has base `create(arg, count?)` and `createMany(...args)` methods.
 
-You can provide a function to define how values are assigned to generated objects.
 ```ts
-const assigner: Assigner = (prop, obj, value) => {
-  // default behavior
-  obj[prop.name] = value;
+@Association(() => [Author, Biography])
+class Book {
+  @Fixture({ type: () => [Author] })
+  authors!: Author[];
 }
-factory.setAssigner(assigner);
+
+class Author {
+  @Fixture({ type: () => [Book] })
+  books!: Book[];
+  @Fixture({ type: () => Biography })
+  biography!: Biography;
+}
+
+class Biography {
+  @Fixture('test')
+  title!: string;
+}
+
+class BookFactory extends FactoryCreator(Book, { maxReflectionCallDepth: 3 }) {}
+const bookFactory = new BookFactory();
+
+const bookA = bookFactory.create();
+const bookB = bookFactory.create({...(you can specify all initial values for properties)});
 ```
 
-### API
+#### create(arg, count?)
 
-WIP
+For creating fixture instances. If you specify second argument, the result becomes array and the instances are initialized by first argument.
 
+#### createMany(...arg)
+
+For creating many fixture instances. The result becomes the array of instances are initialized by the arguments in order.
 
 ### For Babel envrironement
 
