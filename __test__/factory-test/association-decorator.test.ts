@@ -1,4 +1,3 @@
-import { FixtureFactory } from '../../src/FixtureFactory';
 import { FactoryCreator } from '../../src/FactoryCreator';
 import { Fixture } from '../../src/decorators/Fixture';
 import { Association } from '../../src/decorators/Association';
@@ -64,7 +63,6 @@ describe(`nested associations`, () => {
     expect(book.authors[0].biography).toBeInstanceOf(Biography);
     expect(book.authors[0].biography.title).toEqual('test');
   });
-
 });
 
 it(`avoid circular relation many to many`, () => {
