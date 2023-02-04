@@ -43,6 +43,7 @@ dependencies:
   '@plumier/reflect': 1.0.6
   '@types/treeify': 1.0.0
   chalk: 4.1.2
+  class-validator: 0.11.1
   treeify: 1.1.0
   tslib: 2.4.1
 
@@ -61,7 +62,6 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.45.1_tdm6ms4ntwhlpozn7kjqrhum74
   '@typescript-eslint/parser': 5.45.1_s5ps7njkmjlaqajutnox5ntcla
   babel-jest: 29.3.1_@babel+core@7.20.5
-  class-validator: 0.11.1
   eslint: 8.29.0
   eslint-config-prettier: 8.5.0_eslint@8.29.0
   eslint-plugin-import: 2.26.0_i656iqvetrvx3ajhg4t6psfrl4
@@ -1404,7 +1404,6 @@ packages:
 
   /@types/validator/10.11.3:
     resolution: {integrity: sha512-GKF2VnEkMmEeEGvoo03ocrP9ySMuX1ypKazIYMlsjfslfBMhOAtC5dmEWKdJioW4lJN7MZRS88kalTsVClyQ9w==}
-    dev: true
 
   /@types/yargs-parser/21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
@@ -1903,7 +1902,7 @@ packages:
       '@types/validator': 10.11.3
       google-libphonenumber: 3.2.31
       validator: 12.0.0
-    dev: true
+    dev: false
 
   /clean-stack/2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -2821,7 +2820,6 @@ packages:
   /google-libphonenumber/3.2.31:
     resolution: {integrity: sha512-l3bzAkfN4ITICKvuqEiY7JN06RxDAviOoKMtD2KfGYjGK3btPO8Xav7k0fgmf1Ud/pEm523yBh1/s/xDtKEvnw==}
     engines: {node: '>=0.10'}
-    dev: true
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
@@ -5029,7 +5027,6 @@ packages:
   /validator/12.0.0:
     resolution: {integrity: sha512-r5zA1cQBEOgYlesRmSEwc9LkbfNLTtji+vWyaHzRZUxCTHdsX3bd+sdHfs5tGZ2W6ILGGsxWxCNwT/h3IY/3ng==}
     engines: {node: '>= 0.10'}
-    dev: true
 
   /validator/13.7.0:
     resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
