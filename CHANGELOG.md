@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Patch Changes
+
+- ff59bc5: change peer-dependencies
+
 ## 1.0.1
 
 ### Patch Changes
